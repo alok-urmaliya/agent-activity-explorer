@@ -1,1 +1,122 @@
 @import "tailwindcss";
+
+@theme inline {
+  --color-app: var(--bg-app);
+  --color-surface: var(--bg-surface);
+  --color-subtle: var(--bg-subtle);
+  --color-hover: var(--bg-hover);
+
+  --color-border-subtle: var(--border-subtle);
+  --color-border-strong: var(--border-strong);
+
+  --color-primary: var(--text-primary);
+  --color-secondary: var(--text-secondary);
+  --color-muted: var(--text-muted);
+
+  --color-accent: var(--accent-primary);
+  --color-accent-hover: var(--accent-primary-hover);
+  --color-accent-row: var(--accent-row-bg);
+  --color-accent-row-border: var(--accent-row-border);
+
+  --color-status-ok-bg: var(--status-ok-bg);
+  --color-status-ok-text: var(--status-ok-text);
+  --color-status-ok-border: var(--status-ok-border);
+
+  --color-status-blocked-bg: var(--status-blocked-bg);
+  --color-status-blocked-text: var(--status-blocked-text);
+  --color-status-blocked-border: var(--status-blocked-border);
+
+  --color-status-error-bg: var(--status-error-bg);
+  --color-status-error-text: var(--status-error-text);
+  --color-status-error-border: var(--status-error-border);
+
+  --color-chart-line: var(--chart-line);
+  --color-chart-grid: var(--chart-grid);
+  --color-chart-threshold: var(--chart-threshold);
+
+  --color-pill-bg: var(--pill-bg);
+  --color-pill-text: var(--pill-text);
+  --color-pill-border: var(--pill-border);
+}
+
+:root {
+  --bg-app: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-subtle: #f1f5f9;
+  --bg-hover: #e2e8f0;
+
+  --border-subtle: #e2e8f0;
+  --border-strong: #cbd5e1;
+
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+
+  --accent-primary: #6366f1;
+  --accent-primary-hover: #4f46e5;
+  --accent-row-bg: rgba(99, 102, 241, 0.08);
+  --accent-row-border: rgba(99, 102, 241, 0.45);
+
+  --status-ok-bg: #ecfdf5;
+  --status-ok-text: #059669;
+  --status-ok-border: #a7f3d0;
+  --status-ok-dot: #10b981;
+
+  --status-blocked-bg: #fffbeb;
+  --status-blocked-text: #d97706;
+  --status-blocked-border: #fde68a;
+
+  --status-error-bg: #fef2f2;
+  --status-error-text: #dc2626;
+  --status-error-border: #fecaca;
+  --status-error-dot: #ef4444;
+
+  --chart-line: #6366f1;
+  --chart-grid: #e2e8f0;
+  --chart-threshold: #c7d2fe;
+
+  --pill-bg: #f1f5f9;
+  --pill-text: #334155;
+  --pill-border: #e2e8f0;
+}
+
+.dark {
+  --bg-app: #0b0d12;
+  --bg-surface: #12151c;
+  --bg-subtle: #181c25;
+  --bg-hover: #1e2330;
+
+  --border-subtle: #1e232e;
+  --border-strong: #2a3140;
+
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+
+  --accent-primary: #6366f1;
+  --accent-primary-hover: #7c3aed;
+  --accent-row-bg: rgba(99, 102, 241, 0.12);
+  --accent-row-border: rgba(99, 102, 241, 0.55);
+
+  --status-ok-bg: rgba(16, 185, 129, 0.12);
+  --status-ok-text: #34d399;
+  --status-ok-border: rgba(16, 185, 129, 0.25);
+  --status-ok-dot: #10b981;
+
+  --status-blocked-bg: rgba(245, 158, 11, 0.12);
+  --status-blocked-text: #fbbf24;
+  --status-blocked-border: rgba(245, 158, 11, 0.3);
+
+  --status-error-bg: rgba(239, 68, 68, 0.12);
+  --status-error-text: #f87171;
+  --status-error-border: rgba(239, 68, 68, 0.3);
+  --status-error-dot: #ef4444;
+
+  --chart-line: #7c3aed;
+  --chart-grid: #1e232e;
+  --chart-threshold: #4f46e5;
+
+  --pill-bg: #141820;
+  --pill-text: #94a3b8;
+  --pill-border: #1e232e;
+}
