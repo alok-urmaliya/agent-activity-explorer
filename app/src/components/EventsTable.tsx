@@ -4,17 +4,9 @@ import type { EventItem, EventFilters } from "../types"
 type EventsTableProps = {
   events: EventItem[]
   updateFilters: (newFilters: Partial<EventFilters>) => void
-}
-
-function formatArgs(args: unknown): string {
-  if (typeof args === "string") return args
-  if (args == null) return "—"
-
-  try {
-    return JSON.stringify(args)
-  } catch {
-    return String(args)
-  }
+  hasMore: boolean
+  loadingMore: boolean
+  loadMore: () => void
 }
 
 function formatTimestamp(timestamp: string | number | Date): string {
@@ -26,11 +18,25 @@ function formatTimestamp(timestamp: string | number | Date): string {
 }
 
 export default function EventsTable({
-  events,
-  updateFilters,
-}: EventsTableProps) {
+    events,
+    updateFilters,
+    hasMore,
+    loadingMore,
+    loadMore,
+  }: EventsTableProps) {
   return (
-    <div className="events-table-scroll h-full min-h-0 w-full overflow-auto rounded-md border border-subtle">
+    <div
+      className="events-table-scroll h-full min-h-0 w-full overflow-auto rounded-md border border-subtle"
+      onScroll={(event) => {
+        const element = event.currentTarget
+        const distanceToBottom =
+          element.scrollHeight - element.scrollTop - element.clientHeight
+
+        if (distanceToBottom < 150 && hasMore && !loadingMore) {
+          loadMore()
+        }
+      }}
+    >
       <table className="w-full table-fixed border-separate border-spacing-0 text-left text-sm">
         <colgroup>
           <col className="w-[19%]" />
@@ -38,16 +44,15 @@ export default function EventsTable({
           <col className="w-[15%]" />
           <col className="w-[12%]" />
           <col className="w-[12%]" />
-          <col className="w-[27%]" />
         </colgroup>
 
         <thead className="sticky top-0 z-10 bg-surface">
           <tr>
-            {["Timestamp", "Agent", "Tool", "Status", "Latency", "Args"].map(
+            {["Timestamp", "Agent", "Tool", "Status", "Latency"].map(
               (heading) => (
                 <th
                   key={heading}
-                  className="border-b border-subtle bg-surface px-6 py-4 font-medium text-secondary"
+                  className="border-b border-subtle bg-surface px-3 py-2 font-medium text-secondary"
                 >
                   {heading}
                 </th>
@@ -58,33 +63,31 @@ export default function EventsTable({
 
         <tbody>
           {events.map((event) => {
-            const args = formatArgs(event.argsPreview)
-
             return (
               <tr
                 key={event.id}
                 onClick={() => updateFilters({ selectedId: event.id })}
                 className="cursor-pointer bg-transparent transition-colors hover:bg-hover"
               >
-                <td className="border-b border-subtle px-6 py-4 text-secondary">
+                <td className="border-b border-subtle px-3 py-2 text-secondary">
                   <span className="block truncate" title={String(event.timestamp)}>
                     {formatTimestamp(event.timestamp)}
                   </span>
                 </td>
 
-                <td className="border-b border-subtle px-6 py-4 text-primary">
+                <td className="border-b border-subtle px-3 py-2 text-primary">
                   <span className="block truncate" title={event.agent}>
                     {event.agent}
                   </span>
                 </td>
 
-                <td className="border-b border-subtle px-6 py-4 text-primary">
+                <td className="border-b border-subtle px-3 py-2 text-primary">
                   <span className="block truncate" title={event.tool}>
                     {event.tool}
                   </span>
                 </td>
 
-                <td className="border-b border-subtle px-6 py-4">
+                <td className="border-b border-subtle px-3 py-2">
                   <div className="flex">
                     <span
                       className={cn(
@@ -102,14 +105,8 @@ export default function EventsTable({
                   </div>
                 </td>
 
-                <td className="whitespace-nowrap border-b border-subtle px-6 py-4 text-secondary">
+                <td className="whitespace-nowrap border-b border-subtle px-3 py-2 text-secondary">
                   {event.latencyMs} ms
-                </td>
-
-                <td className="border-b border-subtle px-6 py-4 text-secondary">
-                  <div className="truncate" title={args}>
-                    {args}
-                  </div>
                 </td>
               </tr>
             )
@@ -118,10 +115,17 @@ export default function EventsTable({
           {events.length === 0 && (
             <tr>
               <td
-                colSpan={6}
+                colSpan={5}
                 className="border-b border-subtle px-6 py-12 text-center text-secondary"
               >
                 No events found.
+              </td>
+            </tr>
+          )}
+          {loadingMore && (
+            <tr>
+              <td colSpan={5} className="px-3 py-2 text-center text-sm text-secondary">
+                Loading more events...
               </td>
             </tr>
           )}

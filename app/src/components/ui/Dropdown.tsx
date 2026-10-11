@@ -78,7 +78,6 @@ export default function Dropdown({
         >
           {options.map((option) => {
             const selected = option.value === value
-
             return (
               <button
                 key={option.value}
@@ -90,13 +89,13 @@ export default function Dropdown({
                   setOpen(false)
                 }}
                 className={cn(
-                  "flex min-h-9 px-4 w-full items-center justify-between gap-2 whitespace-nowrap rounded px-2 py-2 text-left text-sm text-primary outline-none",
+                  "flex h-min px-2 py-1 mb-1 cursor-pointer w-full items-center justify-between gap-2 whitespace-nowrap rounded text-left text-sm text-primary outline-none",
                   "hover:bg-hover focus-visible:bg-hover",
-                  selected && "bg-accent-row font-medium",
+                  selected && "bg-hover",
                 )}
               >
                 <span>{option.label}</span>
-                {selected && <Check size={16} className="shrink-0" />}
+                {selected && <Check size={12} className="shrink-0" />}
               </button>
             )
           })}

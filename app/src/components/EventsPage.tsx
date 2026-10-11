@@ -48,76 +48,85 @@ const EventsPage: React.FC<EventsPageProps> = ({ filters, updateFilters }) => {
         />
       </div>
 
-      {loading && (
-        <div className="flex h-full w-full items-center justify-center">
-          <p className="text-sm text-secondary">Loading events...</p>
+      <div className="flex min-h-0 flex-1 flex-col gap-4">
+        {/* TODO: Add Timeline */}
+        {/* <div className="h-30 shrink-0 rounded-md border border-subtle bg-surface" /> */}
+
+        <div className="flex shrink-0 gap-4">
+          <Input
+            value={filters.q || ""}
+            onChange={(event) => updateFilters({ q: event.target.value })}
+            placeholder="Search events, tools, args..."
+            className="flex-1"
+          />
+
+          <Dropdown
+            value={filters.agent || ""}
+            onValueChange={(value) =>
+              updateFilters({ agent: value || undefined })
+            }
+            options={[
+              { label: "Agent", value: "" },
+              ...agents.map((agent) => ({ label: agent, value: agent })),
+            ]}
+            placeholder="Agent"
+            className="!w-40"
+          />
+
+          <Dropdown
+            value={filters.status === "all" ? "all" : filters.status || "all"}
+            onValueChange={(value) =>
+              updateFilters({
+                status: (value || "all") as EventStatus,
+              })
+            }
+            options={[
+              { label: "Status", value: "all" },
+              { label: "OK", value: "ok" },
+              { label: "Blocked", value: "blocked" },
+              { label: "Error", value: "error" },
+            ]}
+            placeholder="Status"
+            className="!w-25"
+          />
+
+          <Button
+            onClick={() => {
+              updateFilters({ q: "", agent: "", status: "all" })
+            }}
+          >
+            Clear Filters
+          </Button>
         </div>
-      )}
 
-      {error && (
-        <div className="flex h-full w-full items-center justify-center">
-          <p className="text-sm text-red-500">{error}</p>
-        </div>
-      )}
-
-      {!loading && !error && (
-        <div className="flex min-h-0 flex-1 flex-col gap-4">
-          {/* TODO: Add Timeline */}
-          {/* <div className="h-30 shrink-0 rounded-md border border-subtle bg-surface" /> */}
-
-          <div className="flex shrink-0 gap-4">
-            <Input
-              value={filters.q || ""}
-              onChange={(event) => updateFilters({ q: event.target.value })}
-              placeholder="Search events, tools, args..."
-              className="flex-1"
-            />
-
-            <Dropdown
-              value={filters.agent || ""}
-              onValueChange={(value) =>
-                updateFilters({ agent: value || undefined })
-              }
-              options={[
-                { label: "Agent", value: "" },
-                ...agents.map((agent) => ({ label: agent, value: agent })),
-              ]}
-              placeholder="Agent"
-              className="!w-40"
-            />
-
-            <Dropdown
-              value={filters.status === "all" ? "all" : filters.status || "all"}
-              onValueChange={(value) =>
-                updateFilters({
-                  status: (value || "all") as EventStatus,
-                })
-              }
-              options={[
-                { label: "Status", value: "all" },
-                { label: "OK", value: "ok" },
-                { label: "Blocked", value: "blocked" },
-                { label: "Error", value: "error" },
-              ]}
-              placeholder="Status"
-              className="!w-25"
-            />
-
-            <Button
-              onClick={() => {
-                updateFilters({ q: "", agent: "", status: "all" })
-              }}
-            >
-              Clear Filters
-            </Button>
+        {loading && (
+          <div className="flex h-full w-full items-center justify-center">
+            <p className="text-sm text-secondary">Loading events...</p>
           </div>
+        )}
 
+        {error && (
+          <div className="flex h-full w-full items-center justify-center">
+            <p className="text-sm text-red-500">{error}</p>
+          </div>
+        )}
+
+        {!loading && !error && events.length === 0 && (
+          <div className="flex h-full w-full items-center justify-center">
+            <p className="text-sm text-secondary">No events found.</p>
+          </div>
+        )}
+
+        {!loading && !error && events.length > 0 && (
           <EventsTable
             events={events}
             updateFilters={updateFilters}
+            hasMore={hasMore}
+            loadingMore={loadingMore}
+            loadMore={loadMore}
           />
-        </div>
-      )}
+        )}
+      </div>
 
     </div>
   );
