@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 
-import { getEventById } from "../api"
-import type { EventItem } from "../types"
+import { getEventById } from "../lib/api";
+import type { EventItem } from "../types";
 
 export function useEventDetail(selectedId: string | null) {
   const [data, setData] = useState<EventItem | null>(null);

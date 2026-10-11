@@ -1,5 +1,5 @@
-import { BASE_URL } from './env';
-import type { Agent, EventItem, EventListResponse } from "./types";
+import { BASE_URL } from '../env';
+import type { Agent, EventItem, EventListResponse } from "../types";
 
 
 type QueryValue = string | number | boolean | undefined | null | string[];
@@ -42,8 +42,8 @@ async function request<T>(path: string, params?: Record<string, QueryValue>): Pr
   return (await response.json()) as T;
 }
 
-export const getAgents = async (): Promise<Agent[]> => {
-  return request<Agent[]>('/agents');
+export const getAgents = async (): Promise<string[]> => {
+  return request<string[]>('/agents');
 };
 
 export const getEvents = async (query: EventQuery = {}): Promise<EventListResponse> => {

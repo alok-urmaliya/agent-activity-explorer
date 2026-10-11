@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react";
 
-import { getEvents } from "../api"
-import type { EventItem, EventFilters } from "../types"
+import { getEvents } from "../lib/api";
+import type { EventItem, EventFilters } from "../types";
 
-const PAGE_SIZE = 50
+const PAGE_SIZE = 50;
 
 export function useEvents(filters: EventFilters) {
   const [events, setEvents] = useState<EventItem[]>([])

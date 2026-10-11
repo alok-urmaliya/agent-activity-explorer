@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { getAgents } from "../api";
+import { getAgents } from "../lib/api";
 
 export function useAgents() {
   const [agents, setAgents] = useState<string[]>([]);
@@ -10,7 +10,7 @@ export function useAgents() {
       try {
         const response = await getAgents();
         if (isCurrent) {
-          setAgents(response.map((agent) => agent.name));
+          setAgents(response.map((agent) => agent));
         }
       } catch {
         if (isCurrent) {
