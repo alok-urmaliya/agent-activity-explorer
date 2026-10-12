@@ -6,8 +6,9 @@ import { useState, useEffect } from "react";
 
 
 const App = () => {
-  const [darkMode, setDarkMode] = useState(true);
-
+  const [darkMode, setDarkMode] = useState(
+    () => window.matchMedia("(prefers-color-scheme: dark)").matches
+  );
   const { filters, updateFilters } = useEventFilters();
 
   useEffect(() => {
