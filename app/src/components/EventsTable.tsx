@@ -66,8 +66,15 @@ export default function EventsTable({
             return (
               <tr
                 key={event.id}
+                tabIndex={0}
                 onClick={() => updateFilters({ selectedId: event.id })}
-                className="cursor-pointer bg-transparent transition-colors hover:bg-hover"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault()
+                    updateFilters({ selectedId: event.id })
+                  }
+                }}
+                className="cursor-pointer bg-transparent transition-colors hover:bg-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500"
               >
                 <td className="border-b border-subtle px-3 py-2 text-secondary">
                   <span className="block truncate" title={String(event.timestamp)}>
