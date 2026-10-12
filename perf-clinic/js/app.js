@@ -71,19 +71,30 @@ function loadViewed() {
 
 function rememberViewed(items) {
   const viewed = loadViewed();
+
   for (const item of items) {
     if (!viewed.includes(item.id)) {
       viewed.push(item.id);
     }
-    localStorage.setItem(storageKey, JSON.stringify(viewed));
   }
+
+  localStorage.setItem(storageKey, JSON.stringify(viewed));
 }
+
+const searchableActivity = window.ACTIVITY
+  .map((event) => ({
+    event,
+    searchableText: JSON.stringify(event).toLowerCase(),
+    timestamp: Date.parse(event.timestamp),
+  }))
+  .sort((a, b) => b.timestamp - a.timestamp);
 
 function search(query) {
   const needle = query.trim().toLowerCase();
-  return window.ACTIVITY
-    .filter((event) => JSON.stringify(event).toLowerCase().includes(needle))
-    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+  return searchableActivity
+    .filter(({ searchableText }) => searchableText.includes(needle))
+    .map(({ event }) => event);
 }
 
 function renderResults(query) {
