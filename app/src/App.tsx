@@ -25,6 +25,7 @@ const App = () => {
         />
       </div>
       <EventsPage
+        darkMode={darkMode}
         filters={filters}
         updateFilters={updateFilters}
       />

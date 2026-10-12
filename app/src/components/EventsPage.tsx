@@ -10,11 +10,12 @@ import EventsTable from './EventsTable';
 import EventsHistogram from './EventsHistogram';
 
 interface EventsPageProps {
+  darkMode: boolean;
   filters: EventFilters;
   updateFilters: (newFilters: Partial<EventFilters>) => void;
 }
 
-const EventsPage: React.FC<EventsPageProps> = ({ filters, updateFilters }) => {
+const EventsPage: React.FC<EventsPageProps> = ({ darkMode, filters, updateFilters }) => {
   const [liveMode, setLiveMode] = React.useState(false);
 
   const {
@@ -101,7 +102,10 @@ const EventsPage: React.FC<EventsPageProps> = ({ filters, updateFilters }) => {
             onChange={(event) =>
               updateFilters({ from: event.target.value || undefined })
             }
-            className="h-10 w-40 rounded-md border border-subtle bg-surface px-3 text-sm text-primary"
+            className={darkMode
+              ? "h-10 w-43 rounded-md border border-subtle bg-surface px-3 text-sm text-primary [color-scheme:dark]"
+              : "h-10 w-43 rounded-md border border-subtle bg-surface px-3 text-sm text-primary"
+            }
           />
 
           <input
@@ -112,7 +116,10 @@ const EventsPage: React.FC<EventsPageProps> = ({ filters, updateFilters }) => {
             onChange={(event) =>
               updateFilters({ to: event.target.value || undefined })
             }
-            className="h-10 w-40 rounded-md border border-subtle bg-surface px-3 text-sm text-primary"
+            className={darkMode
+              ? "h-10 w-43 rounded-md border border-subtle bg-surface px-3 text-sm text-primary [color-scheme:dark]"
+              : "h-10 w-43 rounded-md border border-subtle bg-surface px-3 text-sm text-primary"
+            }
           />
 
           <Button

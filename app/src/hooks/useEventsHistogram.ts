@@ -51,7 +51,7 @@ export function useEventsHistogram(
     return () => {
       cancelled = true;
     };
-  }, [filters.q, filters.agent, filters.status, filters.bucket]);
+  }, [filters.q, filters.agent, filters.status, filters.bucket, filters.from, filters.to]);
 
   return {
     buckets: data?.buckets ?? [],
