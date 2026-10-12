@@ -14,6 +14,7 @@ type DropdownProps = {
   placeholder?: string
   className?: string
   disabled?: boolean
+  ariaLabel?: string
 }
 
 export default function Dropdown({
@@ -22,6 +23,7 @@ export default function Dropdown({
   options,
   placeholder = "Select an option",
   className,
+  ariaLabel,
   disabled = false,
 }: DropdownProps) {
   const [open, setOpen] = useState(false)
@@ -52,6 +54,7 @@ export default function Dropdown({
   return (
     <div ref={dropdownRef} className="relative">
       <button
+        aria-label={ariaLabel}
         type="button"
         disabled={disabled}
         aria-haspopup="listbox"

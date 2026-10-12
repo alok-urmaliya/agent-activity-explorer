@@ -53,7 +53,7 @@ const EventDetailPanel = ({
 
       <div className="mt-5">
         {loading && (
-          <div className="flex min-h-40 items-center justify-center">
+          <div role="status" className="flex min-h-40 items-center justify-center">
             <p className="text-sm text-secondary">
               Loading event details...
             </p>
@@ -61,7 +61,7 @@ const EventDetailPanel = ({
         )}
 
         {!loading && (error || !data) && (
-          <p className="text-sm text-secondary">
+          <p role="alert" className="text-sm text-secondary">
             {error || "Unable to load event details."}
           </p>
         )}

@@ -59,6 +59,7 @@ const EventsPage: React.FC<EventsPageProps> = ({ darkMode, filters, updateFilter
 
         <div className="flex shrink-0 gap-4">
           <Input
+            aria-label="Search events, tools, and arguments"
             value={filters.q || ""}
             onChange={(event) => updateFilters({ q: event.target.value })}
             placeholder="Search events, tools, args..."
@@ -66,6 +67,7 @@ const EventsPage: React.FC<EventsPageProps> = ({ darkMode, filters, updateFilter
           />
 
           <Dropdown
+            ariaLabel="Filter by agent"
             value={filters.agent || ""}
             onValueChange={(value) =>
               updateFilters({ agent: value || undefined })
@@ -79,6 +81,7 @@ const EventsPage: React.FC<EventsPageProps> = ({ darkMode, filters, updateFilter
           />
 
           <Dropdown
+            ariaLabel="Filter by status"
             value={filters.status === "all" ? "all" : filters.status || "all"}
             onValueChange={(value) =>
               updateFilters({
@@ -146,7 +149,7 @@ const EventsPage: React.FC<EventsPageProps> = ({ darkMode, filters, updateFilter
         </div>
 
         {loading && (
-          <div className="flex flex-col h-full w-full items-center justify-center">
+          <div role="status" className="flex flex-col h-full w-full items-center justify-center">
             <p className="text-sm text-secondary">Loading events...</p>
             {slowNetwork && (
               <p className="text-xs text-secondary">
@@ -157,13 +160,13 @@ const EventsPage: React.FC<EventsPageProps> = ({ darkMode, filters, updateFilter
         )}
 
         {error && (
-          <div className="flex h-full w-full items-center justify-center">
+          <div role="alert" className="flex h-full w-full items-center justify-center">
             <p className="text-sm text-red-500">{error}</p>
           </div>
         )}
 
         {!loading && !error && events.length === 0 && (
-          <div className="flex h-full w-full items-center justify-center">
+          <div role="alert" className="flex h-full w-full items-center justify-center">
             <p className="text-sm text-secondary">No events found.</p>
           </div>
         )}

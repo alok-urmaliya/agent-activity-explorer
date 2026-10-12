@@ -55,19 +55,19 @@ export default function EventsHistogram({
       </div>
 
       {loading && (
-        <div className="flex h-40 items-center justify-center">
+        <div role="status" className="flex h-40 items-center justify-center">
           <p className="text-sm text-secondary">Loading histogram...</p>
         </div>
       )}
 
       {!loading && error && (
-        <div className="flex h-40 items-center justify-center">
+        <div role="alert" className="flex h-40 items-center justify-center">
           <p className="text-sm text-red-500">{error}</p>
         </div>
       )}
 
       {!loading && !error && buckets.length === 0 && (
-        <div className="flex h-40 items-center justify-center">
+        <div role="alert" className="flex h-40 items-center justify-center">
           <p className="text-sm text-secondary">No event activity found.</p>
         </div>
       )}
