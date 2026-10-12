@@ -22,3 +22,10 @@
 - **Fix:** Converted `assets/hero.png` to WebP at quality 80, producing `assets/hero.webp`, and updated the HTML to use the optimized image.
 - **Before / after:** File size decreased from **4,271 KB to 410 KB** (90.4% reduction). Observed load time decreased from **173 ms to 6 ms** (96.5% lower).
 
+### 4. Optimize agent avatar images
+
+- **Symptom:** Agent avatar images add unnecessary image payload and take around 6–7 ms each to load.
+- **How I found it:** Inspected image sizes and load times using Chrome DevTools Network.
+- **Root cause:** The 12 agent avatars were stored as PNG files despite being suitable for a more compact image format.
+- **Fix:** Converted the 12 avatar images to WebP at quality 80 and updated `js/app.js` to reference the WebP files.
+- **Before / after:** Combined PNG size was **1,889.93 KB**. The WebP copies were approximately **6 KB each**, or roughly **72 KB combined**—an estimated **96.2% reduction**. Observed load time decreased from **5–10 ms to 2–3 ms per image**.

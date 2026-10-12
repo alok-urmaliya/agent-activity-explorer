@@ -36,7 +36,7 @@ function countByAgent(events) {
 function renderAgents() {
   const counts = countByAgent(window.ACTIVITY);
   grid.innerHTML = window.AGENTS.map((agent, index) => {
-    const image = 'assets/agents/agent-' + String((index % 12) + 1).padStart(2, '0') + '.png';
+    const image = 'assets/agents/agent-' + String((index % 12) + 1).padStart(2, '0') + '.webp';
     return (
       '<article class="agent-card">' +
       '<img class="agent-avatar" src="' + image + '" alt="">' +
