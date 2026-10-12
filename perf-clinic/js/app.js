@@ -172,6 +172,7 @@ function showPreview(event) {
 
 const renderedTickerRows = new Map();
 let tickerPanel = null;
+let tickerInterval = null;
 
 function tickerRow(event) {
   if (renderedTickerRows.has(event.id)) {
@@ -200,9 +201,11 @@ function openTicker() {
   tickerPanel = panel;
   const list = panel.querySelector('.ticker-list');
 
-  setInterval(() => {
+  tickerInterval = setInterval(() => {
+    window.__tickerTicks = (window.__tickerTicks || 0) + 1;
     const event = window.ACTIVITY[Math.floor(Math.random() * window.ACTIVITY.length)];
     list.prepend(tickerRow(event));
+
     while (list.children.length > tickerVisibleRows) {
       list.lastElementChild.remove();
     }
@@ -219,6 +222,9 @@ function openTicker() {
 
 function closeTicker() {
   if (!tickerPanel) return;
+  clearInterval(tickerInterval);
+  tickerInterval = null;
+
   tickerPanel.remove();
   tickerPanel = null;
   tickerToggle.setAttribute('aria-pressed', 'false');
