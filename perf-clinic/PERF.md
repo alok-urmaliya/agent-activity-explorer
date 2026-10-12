@@ -29,3 +29,11 @@
 - **Root cause:** The 12 agent avatars were stored as PNG files despite being suitable for a more compact image format.
 - **Fix:** Converted the 12 avatar images to WebP at quality 80 and updated `js/app.js` to reference the WebP files.
 - **Before / after:** Combined PNG size was **1,889.93 KB**. The WebP copies were approximately **6 KB each**, or roughly **72 KB combined**—an estimated **96.2% reduction**. Observed load time decreased from **5–10 ms to 2–3 ms per image**.
+
+### 5. Remove expensive JavaScript summary resizing
+
+- **Symptom:** Rendering search results takes around 187 ms.
+- **How I found it:** Used Chrome DevTools Console to measure `fitSummaries()` and `renderResults("billing")`. The summary-resizing function took approximately 154 ms per run.
+- **Root cause:** `fitSummaries()` repeatedly changed the font size of each result summary and read its layout dimensions until the text fit, causing unnecessary layout work across up to 200 rows.
+- **Fix:** Removed `fitSummaries()` and its associated calls and resize listener. Used the existing CSS `overflow: hidden`, `white-space: nowrap`, and `text-overflow: ellipsis` behavior to handle overflowing summaries without JavaScript resizing.
+- **Before / after:** Average `renderResults("billing")` time decreased from **187.28 ms to 38.95 ms** across three runs each, saving **148.33 ms** and reducing render time by approximately **79.2%**.

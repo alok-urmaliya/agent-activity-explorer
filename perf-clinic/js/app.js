@@ -116,20 +116,20 @@ function renderResults(query) {
       '</li>'
     );
   }).join('');
-  fitSummaries();
+  // fitSummaries();
   rememberViewed(page);
 }
 
-function fitSummaries() {
-  resultsList.querySelectorAll('.result-summary').forEach((cell) => {
-    let size = 14;
-    cell.style.fontSize = size + 'px';
-    while (cell.scrollWidth > cell.clientWidth && size > 11) {
-      size -= 0.5;
-      cell.style.fontSize = size + 'px';
-    }
-  });
-}
+// function fitSummaries() {
+//   resultsList.querySelectorAll('.result-summary').forEach((cell) => {
+//     let size = 14;
+//     cell.style.fontSize = size + 'px';
+//     while (cell.scrollWidth > cell.clientWidth && size > 11) {
+//       size -= 0.5;
+//       cell.style.fontSize = size + 'px';
+//     }
+//   });
+// }
 
 function onScroll() {
   const scrolled = window.scrollY;
@@ -234,7 +234,7 @@ function closeTicker() {
 searchInput.addEventListener('input', () => renderResults(searchInput.value));
 window.addEventListener('scroll', onScroll);
 window.addEventListener('resize', equalizeCardHeights);
-window.addEventListener('resize', fitSummaries);
+// window.addEventListener('resize', fitSummaries);
 resultsList.addEventListener('mousemove', showPreview);
 resultsList.addEventListener('mouseleave', hidePreview);
 resultsList.addEventListener('wheel', hidePreview);
