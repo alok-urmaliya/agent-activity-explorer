@@ -7,6 +7,8 @@ import Dropdown from './ui/Dropdown';
 import { useAgents } from '@/hooks/useAgents';
 import Button from './ui/Button';
 import EventsTable from './EventsTable';
+import { useEventsHistogram } from '@/hooks/useEventsHistogram';
+import EventsHistogram from './EventsHistogram';
 
 interface EventsPageProps {
   filters: EventFilters;
@@ -48,8 +50,7 @@ const EventsPage: React.FC<EventsPageProps> = ({ filters, updateFilters }) => {
       </div>
 
       <div className="flex min-h-0 flex-1 flex-col gap-4">
-        {/* TODO: Add Timeline */}
-        {/* <div className="h-30 shrink-0 rounded-md border border-subtle bg-surface" /> */}
+        <EventsHistogram filters={filters} />
 
         <div className="flex shrink-0 gap-4">
           <Input
@@ -69,7 +70,7 @@ const EventsPage: React.FC<EventsPageProps> = ({ filters, updateFilters }) => {
               ...agents.map((agent) => ({ label: agent, value: agent })),
             ]}
             placeholder="Agent"
-            className="!w-40"
+            className="!w-25"
           />
 
           <Dropdown
@@ -89,10 +90,45 @@ const EventsPage: React.FC<EventsPageProps> = ({ filters, updateFilters }) => {
             className="!w-25"
           />
 
+          <input
+            type="datetime-local"
+            aria-label="From date and time"
+            value={filters.from ?? ""}
+            onChange={(event) =>
+              updateFilters({ from: event.target.value || undefined })
+            }
+            className="h-10 w-40 rounded-md border border-subtle bg-surface px-3 text-sm text-primary"
+          />
+
+          <input
+            type="datetime-local"
+            aria-label="To date and time"
+            value={filters.to ?? ""}
+            min={filters.from || undefined}
+            onChange={(event) =>
+              updateFilters({ to: event.target.value || undefined })
+            }
+            className="h-10 w-40 rounded-md border border-subtle bg-surface px-3 text-sm text-primary"
+          />
+
           <Button
-            onClick={() => {
-              updateFilters({ q: "", agent: "", status: "all" })
-            }}
+            onClick={() =>
+              updateFilters({
+                q: "",
+                agent: "",
+                status: "all",
+                from: undefined,
+                to: undefined,
+              })
+            }
+            disabled={
+              !filters.q &&
+              !filters.agent &&
+              (!filters.status || filters.status === "all") &&
+              !filters.from &&
+              !filters.to
+            }
+            className="cursor-pointer disabled:cursor-not-allowed"
           >
             Clear Filters
           </Button>

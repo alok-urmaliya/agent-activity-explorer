@@ -29,9 +29,11 @@ export function useEvents(filters: EventFilters) {
         q: filters.q || undefined,
         agent: filters.agent || undefined,
         status: filters.status === "all" ? undefined : filters.status,
+        from: filters.from || undefined,
+        to: filters.to || undefined,
         limit: PAGE_SIZE,
         cursor: append ? nextCursorRef.current ?? undefined : undefined,
-      }
+      };
 
       if (append) {
         loadingMoreRef.current = true
@@ -71,7 +73,7 @@ export function useEvents(filters: EventFilters) {
         }
       }
     },
-    [filters.agent, filters.q, filters.status],
+    [filters.agent, filters.from, filters.q, filters.status, filters.to]
   )
 
   useEffect(() => {

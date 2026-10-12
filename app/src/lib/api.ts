@@ -1,5 +1,11 @@
 import { BASE_URL } from '../env';
-import type { Agent, EventItem, EventListResponse } from "../types";
+import type {
+  EventItem,
+  EventListResponse,
+  EventsHistogramResponse,
+  EventsHistogramParams
+} from "../types";
+import { toISOString } from "./utils";
 
 
 type QueryValue = string | number | boolean | undefined | null | string[];
@@ -46,10 +52,27 @@ export const getAgents = async (): Promise<string[]> => {
   return request<string[]>('/agents');
 };
 
-export const getEvents = async (query: EventQuery = {}): Promise<EventListResponse> => {
-  return request<EventListResponse>('/events', query);
+export const getEvents = async (
+  query: EventQuery = {},
+): Promise<EventListResponse> => {
+  return request<EventListResponse>("/events", {
+    ...query,
+    from: toISOString(query.from),
+    to: toISOString(query.to),
+  });
 };
 
 export const getEventById = async (id: string): Promise<EventItem> => {
   return request<EventItem>(`/events/${encodeURIComponent(id)}`);
+};
+
+export const getEventsHistogram = async (
+  params: EventsHistogramParams,
+): Promise<EventsHistogramResponse> => {
+  return request<EventsHistogramResponse>("/events/histogram", {
+    ...params,
+    from: toISOString(params.from),
+    to: toISOString(params.to),
+    status: params.status === "all" ? undefined : params.status,
+  });
 };

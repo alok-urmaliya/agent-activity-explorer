@@ -29,5 +29,25 @@ export type EventFilters = {
   q: string;
   agent: string;
   status: EventStatusFilter;
+  from?: string;
+  to?: string;
   selectedId: string | null;
 };
+
+export type HistogramBucketSize = "1m" | "5m" | "1h";
+
+export interface HistogramBucket {
+  t: string;
+  count: number;
+}
+
+export interface EventsHistogramResponse {
+  bucket: HistogramBucketSize;
+  buckets: HistogramBucket[];
+}
+
+export interface EventsHistogramParams extends EventFilters {
+  bucket?: HistogramBucketSize;
+  from?: string;
+  to?: string;
+}
