@@ -32,6 +32,7 @@ export type EventFilters = {
   from?: string;
   to?: string;
   selectedId: string | null;
+  bucket?: HistogramBucketSize;
 };
 
 export type HistogramBucketSize = "1m" | "5m" | "1h";
@@ -44,10 +45,4 @@ export interface HistogramBucket {
 export interface EventsHistogramResponse {
   bucket: HistogramBucketSize;
   buckets: HistogramBucket[];
-}
-
-export interface EventsHistogramParams extends EventFilters {
-  bucket?: HistogramBucketSize;
-  from?: string;
-  to?: string;
 }

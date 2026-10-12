@@ -7,7 +7,6 @@ import Dropdown from './ui/Dropdown';
 import { useAgents } from '@/hooks/useAgents';
 import Button from './ui/Button';
 import EventsTable from './EventsTable';
-import { useEventsHistogram } from '@/hooks/useEventsHistogram';
 import EventsHistogram from './EventsHistogram';
 
 interface EventsPageProps {
@@ -50,7 +49,12 @@ const EventsPage: React.FC<EventsPageProps> = ({ filters, updateFilters }) => {
       </div>
 
       <div className="flex min-h-0 flex-1 flex-col gap-4">
-        <EventsHistogram filters={filters} />
+        <EventsHistogram
+          filters={filters}
+          updateBucketSize={(val) => {
+            updateFilters({ bucket: val || undefined})
+          }}
+        />
 
         <div className="flex shrink-0 gap-4">
           <Input

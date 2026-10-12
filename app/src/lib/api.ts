@@ -3,7 +3,7 @@ import type {
   EventItem,
   EventListResponse,
   EventsHistogramResponse,
-  EventsHistogramParams
+  EventFilters
 } from "../types";
 import { toISOString } from "./utils";
 
@@ -67,7 +67,7 @@ export const getEventById = async (id: string): Promise<EventItem> => {
 };
 
 export const getEventsHistogram = async (
-  params: EventsHistogramParams,
+  params: EventFilters,
 ): Promise<EventsHistogramResponse> => {
   return request<EventsHistogramResponse>("/events/histogram", {
     ...params,

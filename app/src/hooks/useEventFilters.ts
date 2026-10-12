@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
-import type { EventFilters } from '../types';
+import type { EventFilters, HistogramBucketSize } from '../types';
 
 export const INITIAL_VALUES: EventFilters = {
   q: '',
   agent: '',
   status: 'all',
   selectedId: null,
+  bucket: undefined,
 };
 
 function extractFiltersData(): EventFilters {
@@ -17,6 +18,7 @@ function extractFiltersData(): EventFilters {
     agent: search.get('agent') ?? '',
     status: rawStatus === 'ok' || rawStatus === 'blocked' || rawStatus === 'error' ? rawStatus : 'all',
     selectedId: search.get('event') ?? null,
+    bucket: search.get("bucket") as HistogramBucketSize ?? undefined,
   };
 };
 
@@ -30,6 +32,7 @@ export function useEventFilters() {
     if (nextFilters.agent) params.set('agent', nextFilters.agent);
     if (nextFilters.status !== 'all') params.set('status', nextFilters.status);
     if (nextFilters.selectedId) params.set('event', nextFilters.selectedId);
+    if (nextFilters.bucket) params.set("bucket", nextFilters.bucket);
 
     const query = params.toString();
     const nextUrl = `${window.location.pathname}${query ? `?${query}` : ''}`;

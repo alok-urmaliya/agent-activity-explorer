@@ -3,13 +3,10 @@ import { getEventsHistogram } from "../lib/api";
 import type {
   EventFilters,
   EventsHistogramResponse,
-  HistogramBucketSize,
-  EventsHistogramParams,
 } from "../types";
 
 export function useEventsHistogram(
   filters: EventFilters,
-  bucket: HistogramBucketSize = "1m",
 ) {
   const [data, setData] = useState<EventsHistogramResponse | null>(null);
   const [loading, setLoading] = useState(false);
@@ -29,8 +26,8 @@ export function useEventsHistogram(
           status: filters.status,
           from: filters.from,
           to: filters.to,
-          bucket,
-        } as EventsHistogramParams);
+          bucket: filters.bucket ?? "1m",
+        } as EventFilters);
 
         if (!cancelled) {
           setData(response);
@@ -54,7 +51,7 @@ export function useEventsHistogram(
     return () => {
       cancelled = true;
     };
-  }, [filters.q, filters.agent, filters.status, bucket]);
+  }, [filters.q, filters.agent, filters.status, filters.bucket]);
 
   return {
     buckets: data?.buckets ?? [],

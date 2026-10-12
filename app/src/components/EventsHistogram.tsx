@@ -7,11 +7,12 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import type { EventFilters } from "../types";
+import type { EventFilters, HistogramBucketSize } from "../types";
 import { useEventsHistogram } from "../hooks/useEventsHistogram";
 
 interface EventsHistogramProps {
   filters: EventFilters;
+  updateBucketSize: (val: HistogramBucketSize) => void;
 }
 
 function formatTime(value: string) {
@@ -23,25 +24,39 @@ function formatTime(value: string) {
 
 export default function EventsHistogram({
   filters,
+  updateBucketSize
 }: EventsHistogramProps) {
   const { buckets, loading, error } = useEventsHistogram(filters);
 
   return (
     <section className="shrink-0 rounded-lg border border-subtle bg-surface p-4">
-      <div className="mb-4">
-        <h3 className="text-sm font-semibold text-primary">
-          Event activity
-        </h3>
-        <p className="text-xs text-secondary">
-          Number of events over time
-        </p>
+      <div className="mb-4 flex items-center justify-between">
+        <div>
+          <h3 className="text-sm font-semibold text-primary">
+            Event activity
+          </h3>
+          <p className="text-xs text-secondary">
+            Number of events over time
+          </p>
+        </div>
+
+        <select
+          value={filters.bucket}
+          onChange={(event) =>
+            updateBucketSize(event.target.value as HistogramBucketSize)
+          }
+          aria-label="Histogram bucket size"
+          className="h-9 rounded-md border border-subtle bg-surface px-3 text-sm text-primary"
+        >
+          <option value="1m">1 minute</option>
+          <option value="5m">5 minutes</option>
+          <option value="1h">1 hour</option>
+        </select>
       </div>
 
       {loading && (
         <div className="flex h-40 items-center justify-center">
-          <p className="text-sm text-secondary">
-            Loading histogram...
-          </p>
+          <p className="text-sm text-secondary">Loading histogram...</p>
         </div>
       )}
 
@@ -53,9 +68,7 @@ export default function EventsHistogram({
 
       {!loading && !error && buckets.length === 0 && (
         <div className="flex h-40 items-center justify-center">
-          <p className="text-sm text-secondary">
-            No event activity found.
-          </p>
+          <p className="text-sm text-secondary">No event activity found.</p>
         </div>
       )}
 
@@ -70,7 +83,6 @@ export default function EventsHistogram({
               strokeDasharray="3 3"
               vertical={false}
             />
-
             <XAxis
               dataKey="t"
               tickFormatter={formatTime}
@@ -79,14 +91,12 @@ export default function EventsHistogram({
               tickLine={false}
               minTickGap={24}
             />
-
             <YAxis
               allowDecimals={false}
               tick={{ fill: "var(--text-muted)", fontSize: 11 }}
               axisLine={false}
               tickLine={false}
             />
-
             <Tooltip
               labelFormatter={(label) =>
                 new Date(String(label)).toLocaleString()
@@ -99,7 +109,6 @@ export default function EventsHistogram({
                 fontSize: "12px",
               }}
             />
-
             <Bar
               dataKey="count"
               name="Events"
