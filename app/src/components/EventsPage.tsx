@@ -100,8 +100,13 @@ const EventsPage: React.FC<EventsPageProps> = ({ filters, updateFilters }) => {
         </div>
 
         {loading && (
-          <div className="flex h-full w-full items-center justify-center">
+          <div className="flex flex-col h-full w-full items-center justify-center">
             <p className="text-sm text-secondary">Loading events...</p>
+            {slowNetwork && (
+              <p className="text-xs text-secondary">
+                This is taking longer than expected. Please check your network.
+              </p>
+            )}
           </div>
         )}
 
