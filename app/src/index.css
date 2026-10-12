@@ -37,6 +37,10 @@
   --color-pill-bg: var(--pill-bg);
   --color-pill-text: var(--pill-text);
   --color-pill-border: var(--pill-border);
+
+  --color-panel-header: var(--bg-panel-header);
+  --color-code-block: var(--bg-code-block);
+  --color-syntax-string: var(--syntax-string);
 }
 
 :root {
@@ -78,6 +82,11 @@
   --pill-bg: #f1f5f9;
   --pill-text: #334155;
   --pill-border: #e2e8f0;
+
+  /* SIDE PANEL ADDITIONS - LIGHT MODE */
+  --bg-panel-header: #f1f5f9;
+  --bg-code-block: #f8fafc;
+  --syntax-string: #059669;
 }
 
 .dark {
@@ -119,8 +128,11 @@
   --pill-bg: #141820;
   --pill-text: #94a3b8;
   --pill-border: #1e232e;
-}
 
+  --bg-panel-header: #1a1d24;
+  --bg-code-block: #0d0f14;
+  --syntax-string: #86efac;
+}
 .events-table-scroll {
   scrollbar-width: thin;
   scrollbar-color: var(--border-strong) transparent;

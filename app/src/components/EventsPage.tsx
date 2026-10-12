@@ -30,7 +30,6 @@ const EventsPage: React.FC<EventsPageProps> = ({ filters, updateFilters }) => {
     loadMore,
   } = useEvents(filters);
 
-  console.log(loading);
   return (
     <div className="flex min-h-0 w-full flex-1 flex-col gap-6 overflow-hidden p-6 text-primary">
       <div className="flex shrink-0 items-center justify-between">
