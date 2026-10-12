@@ -83,7 +83,7 @@ const EventDetailPanel = ({
                 {data.status}
               </span>
             </div>
-            <div className="flex flex-col justify-between gap-4">
+            <div className="flex justify-between gap-4">
               <div className="flex-1 min-w-0 rounded-md border border-panel-header p-4">
                 <p className="text-sm text-secondary">Agent</p>
                 <p className="text-sm text-primary">{data?.agent || "N/A"}</p>
