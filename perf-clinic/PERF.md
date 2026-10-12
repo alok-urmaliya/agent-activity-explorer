@@ -37,3 +37,14 @@
 - **Root cause:** `fitSummaries()` repeatedly changed the font size of each result summary and read its layout dimensions until the text fit, causing unnecessary layout work across up to 200 rows.
 - **Fix:** Removed `fitSummaries()` and its associated calls and resize listener. Used the existing CSS `overflow: hidden`, `white-space: nowrap`, and `text-overflow: ellipsis` behavior to handle overflowing summaries without JavaScript resizing.
 - **Before / after:** Average `renderResults("billing")` time decreased from **187.28 ms to 38.95 ms** across three runs each, saving **148.33 ms** and reducing render time by approximately **79.2%**.
+
+### 6. Expensive calls-per-minute calculation on scroll
+
+- **Symptom:** Scrolling repeatedly scanned all 100,000 activity events to calculate the number of calls in the focused minute.
+- **How found:** Chrome DevTools Console benchmark using `performance.now()`.
+- **Root cause:** The scroll handler filtered the entire activity array and created a `Date` object for every event on each invocation.
+- **Fix:** Precomputed call counts by minute in a `Map` and replaced the repeated full-array scan with a constant-time lookup.
+- **Before:** 90.1360 ms/run for the full scan.
+- **After:** 0.000015 ms/run for the map lookup in the console microbenchmark.
+
+The benchmark measures the isolated calculation, not the entire scroll handler. The map lookup is effectively instantaneous at this measurement scale.

@@ -70,15 +70,11 @@ function loadViewed() {
 }
 
 function rememberViewed(items) {
-  const viewed = loadViewed();
-
+  const viewed = new Set(loadViewed());
   for (const item of items) {
-    if (!viewed.includes(item.id)) {
-      viewed.push(item.id);
-    }
+    viewed.add(item.id);
   }
-
-  localStorage.setItem(storageKey, JSON.stringify(viewed));
+  localStorage.setItem(storageKey, JSON.stringify([...viewed]));
 }
 
 const searchableActivity = window.ACTIVITY
@@ -100,10 +96,10 @@ function search(query) {
 function renderResults(query) {
   const matches = search(query);
   const page = matches.slice(0, pageSize);
-  const viewed = loadViewed();
+  const viewed = new Set(loadViewed());
   resultsCount.textContent = matches.length.toLocaleString() + ' matching tool calls';
   resultsList.innerHTML = page.map((event) => {
-    const isNew = !viewed.includes(event.id);
+    const isNew = !viewed.has(event.id);
     return (
       '<li class="result-row status-' + event.status + '" data-id="' + event.id + '" data-minute="' + event.timestamp.slice(11, 16) + '">' +
       '<span class="result-time">' + formatTime(event.timestamp) + '</span>' +
@@ -131,6 +127,13 @@ function renderResults(query) {
 //   });
 // }
 
+const callsByMinute = new Map();
+
+for (const event of window.ACTIVITY) {
+  const minute = event.timestamp.slice(11, 16);
+  callsByMinute.set(minute, (callsByMinute.get(minute) || 0) + 1);
+}
+
 function onScroll() {
   const scrolled = window.scrollY;
   const max = document.documentElement.scrollHeight - window.innerHeight;
@@ -148,7 +151,7 @@ function onScroll() {
   const focused = resultsList.querySelector('.in-focus');
   if (focused) {
     const minute = focused.dataset.minute;
-    const sameMinute = window.ACTIVITY.filter((event) => new Date(event.timestamp).toISOString().slice(11, 16) === minute).length;
+    const sameMinute = callsByMinute.get(minute) || 0;
     scrollContext.textContent = minute + ' UTC · ' + sameMinute + ' calls that minute';
   } else {
     scrollContext.textContent = '';
@@ -224,6 +227,9 @@ function closeTicker() {
   if (!tickerPanel) return;
   clearInterval(tickerInterval);
   tickerInterval = null;
+
+  window.removeEventListener("resize", positionTicker);
+  window.removeEventListener("keydown", handleTickerKeydown);
 
   tickerPanel.remove();
   tickerPanel = null;
